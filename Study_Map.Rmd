@@ -1,0 +1,101 @@
+---
+title: "Station_Map"
+author: "Jose Martinez"
+date: "2023-03-26"
+output: html_document
+---
+
+```{r}
+########load required libraries
+library(tidyverse)
+library(plotly)
+library(patchwork)
+library(Hmisc)
+library(maps)
+library(rstudioapi)
+library(ggmap)
+library(ggrepel)
+library(tmaptools)
+```
+```{r}
+df = data.frame(lon = c(-66.793359, -66.749231, -66.770818, -66.770732, -66.770990,-66.770818),
+            lat = c(17.98575, 17.965728, 17.989541, 17.981704, 17.973866,17.966273),
+            Station = c(1,2,3,4,5,6))
+```
+
+
+```{r}
+# Draw the map
+register_google(key = "AIzaSyDiR6zaf6-zLW35sH_XftY5XkVRqrSuq90")
+
+studymap1 = ggmap(get_googlemap(center = c(lon = -66.770713 , lat = 17.983142), 
+                            zoom = 13,
+                            maptype = 'satellite',
+                            color = 'color',
+                            scale = 2,))
+
+# Add the points
+studymap1 = studymap1 + 
+  geom_point(data = df, aes(x = lon, y = lat, color = as.factor(Station)), 
+      alpha = 0.6,  size = 8)+
+  labs(color='Stations')+
+  ylab("Latitude (N)")+
+  xlab("Longitude (E)")+
+  ggtitle("Possible Project Station Map")+
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        text = element_text(size = 12),
+        legend.position= "right",
+        plot.title = element_text(hjust = 0.5, size = 15))
+
+print(studymap1)
+```
+
+
+
+
+```{r}
+register_google(key = "AIzaSyDiR6zaf6-zLW35sH_XftY5XkVRqrSuq90")
+
+studymap = ggmap(get_googlemap(center = c(lon = -66.770713 , lat = 17.983142), 
+                            zoom = 13,
+                            maptype = 'satellite',
+                            color = 'color',
+                            scale = 2,)))
+                    
+print(studymap)+
+  #ggplot()+
+  geom_point(aes(x = -66.793359, y = 17.98575,size = Station),shape = 15,size = 5,color = 'purple')+ # Callo Maria Langa
+  geom_point(shape = 16, aes(x= -66.749231, y = 17.965728),size = 5,color = 'purple')+  # left most station (muddy)
+  geom_point(shape = 13,aes(x = -66.770818, y = 17.989541),size = 5,color = 'red')+ # inshore north
+  geom_point(shape = 13,aes(x = -66.770732, y = 17.981704),size = 5,color = 'red')+ # inshore south
+  geom_point(shape = 13,aes(x = -66.770990, y = 17.973866),size = 5,color = 'red')+ # offshore north
+  geom_point(shape = 13,aes(x = -66.770818, y = 17.966273),size = 5,color = 'red')+ # offshore south
+  ylab("Latitude (N)")+
+  xlab("Longitude (E)")+
+  ggtitle("Possible Project Station Map")+
+  scale_fill_discrete(name = "Site")+
+  scale_color_discrete(name = "Site")+
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        text = element_text(size = 12),
+        legend.position= "top",
+        plot.title = element_text(hjust = 0.5, size = 15))
+```
+
+
+17.966273, -66.770818
+
+
+
+
+
+
+
+
+
+
+
+
