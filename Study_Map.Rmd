@@ -5,7 +5,7 @@ date: "2023-03-26"
 output: html_document
 ---
 
-```{r}
+```{r setup, include=FALSE}
 ########load required libraries
 library(tidyverse)
 library(plotly)
@@ -17,10 +17,15 @@ library(ggmap)
 library(ggrepel)
 library(tmaptools)
 ```
+
+
 ```{r}
-df = data.frame(lon = c(-66.793359, -66.749231, -66.770818, -66.770732, -66.770990,-66.770818),
-            lat = c(17.98575, 17.965728, 17.989541, 17.981704, 17.973866,17.966273),
-            Station = c(1,2,3,4,5,6))
+df = data.frame(lon = c(-66.773, -66.763, -66.732, -66.732),
+            lat = c(17.990, 17.976, 17.980, 17.957),
+            Station = c(1,2,3,4),
+            Depth = c(13.5296,14.0382,13.5154,13.6916))
+
+df_depth = data.frame(Station = c(1,2,3,4), Depth = c(13.5296,14.0382,13.5154,13.6916))
 ```
 
 
@@ -32,13 +37,15 @@ studymap1 = ggmap(get_googlemap(center = c(lon = -66.770713 , lat = 17.983142),
                             zoom = 13,
                             maptype = 'satellite',
                             color = 'color',
-                            scale = 2,))
+                            scale = 2,
+                            label = Depth))
 
 # Add the points
 studymap1 = studymap1 + 
   geom_point(data = df, aes(x = lon, y = lat, color = as.factor(Station)), 
-      alpha = 0.6,  size = 8)+
+      alpha = 0.6,  size = 5)+
   labs(color='Stations')+
+  #geom_text(label = df$Depth,hjust = 1,vjust = 1)+
   ylab("Latitude (°N)")+
   xlab("Longitude (°E)")+
   ggtitle("Possible Project Stations Map")+
@@ -48,11 +55,16 @@ studymap1 = studymap1 +
         panel.border = element_blank(),
         text = element_text(size = 12),
         legend.position= "right",
-        plot.title = element_text(hjust = 0.5, size = 15))
+        plot.title = element_text(vjust = 2, hjust = 0.5, size = 15))
 
 print(studymap1)
 
 ggsave("Possible_StationMap.pdf",studymap1,width =16, height = 8)
+
+
+
+#depth_t = write.table(df_depth,row.names = FALSE)
+
 ```
 
 
@@ -65,16 +77,16 @@ studymap = ggmap(get_googlemap(center = c(lon = -66.770713 , lat = 17.983142),
                             zoom = 13,
                             maptype = 'satellite',
                             color = 'color',
-                            scale = 2,)))
+                            scale = 2,))
                     
 print(studymap)+
   #ggplot()+
-  geom_point(aes(x = -66.793359, y = 17.98575,size = Station),shape = 15,size = 5,color = 'purple')+ # Callo Maria Langa
-  geom_point(shape = 16, aes(x= -66.749231, y = 17.965728),size = 5,color = 'purple')+  # left most station (muddy)
-  geom_point(shape = 13,aes(x = -66.770818, y = 17.989541),size = 5,color = 'red')+ # inshore north
-  geom_point(shape = 13,aes(x = -66.770732, y = 17.981704),size = 5,color = 'red')+ # inshore south
-  geom_point(shape = 13,aes(x = -66.770990, y = 17.973866),size = 5,color = 'red')+ # offshore north
-  geom_point(shape = 13,aes(x = -66.770818, y = 17.966273),size = 5,color = 'red')+ # offshore south
+  #geom_point(aes(x = -66.793359, y = 17.98575,size = Station),shape = 15,size = 5,color = 'purple')+ # Callo Maria Langa
+  #geom_point(shape = 16, aes(x= -66.749231, y = 17.965728),size = 5,color = 'purple')+  # left most station (muddy)
+  geom_point(shape = 13,aes(x = -66.773, y = 17.990),size = 5,color = 'red')+ # inshore north
+  geom_point(shape = 13,aes(x = -66.763, y = 17.976),size = 5,color = 'red')+ # inshore south
+  geom_point(shape = 13,aes(x = -66.732, y = 17.980),size = 5,color = 'red')+ # offshore north
+  geom_point(shape = 13,aes(x = -66.732, y = 17.957),size = 5,color = 'red')+ # offshore south
   ylab("Latitude (N)")+
   xlab("Longitude (E)")+
   ggtitle("Possible Project Station Map")+
