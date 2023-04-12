@@ -25,6 +25,7 @@ df = data.frame(lon = c(-66.773, -66.763, -66.732, -66.732),
             Station = c(1,2,3,4),
             Depth = c(13.5296,14.0382,13.5154,13.6916))
 
+<<<<<<< HEAD
 df_depth = data.frame(Station = c(1,2,3,4), Depth = c(4.99776,4.86495,4.76055,5.13099))
 
 
@@ -32,6 +33,9 @@ df_1 = data.frame(lon = c( -66.785, -66.783, -66.775,-66.752),
             lat = c(17.994, 17.986, 17.976,17.963),
             Station = c(1,2,3,4),
             Depth = c(4.99776,4.86495,4.76055,4.97794))
+=======
+df_depth = data.frame(Station = c(1,2,3,4), Depth = c(13.5296,14.0382,13.5154,13.6916))
+>>>>>>> cac3f769eb110857010aa0d0d538a751137b8f5d
 ```
 
 
@@ -48,7 +52,11 @@ studymap1 = ggmap(get_googlemap(center = c(lon = -66.770713 , lat = 17.983142),
 
 # Add the points
 studymap1 = studymap1 + 
+<<<<<<< HEAD
   geom_point(data = df_1, aes(x = lon, y = lat, color = as.factor(Station)), 
+=======
+  geom_point(data = df, aes(x = lon, y = lat, color = as.factor(Station)), 
+>>>>>>> cac3f769eb110857010aa0d0d538a751137b8f5d
       alpha = 0.6,  size = 5)+
   labs(color='Stations')+
   #geom_text(label = df$Depth,hjust = 1,vjust = 1)+
